@@ -21,10 +21,10 @@ const recentActivity = [
 ]
 
 const quickActions = [
-    { label: 'Create Workflow', href: '/dashboard/workflows/builder', icon: Workflow, color: 'from-blue-500 to-blue-700' },
-    { label: 'Add Product', href: '/dashboard/ecommerce/products', icon: Package, color: 'from-green-500 to-green-700' },
-    { label: 'New AI Agent', href: '/dashboard/ai/agents', icon: Bot, color: 'from-purple-500 to-purple-700' },
-    { label: 'Assign Task', href: '/dashboard/workforce/tasks', icon: Zap, color: 'from-orange-500 to-orange-700' },
+    { label: 'Create Workflow', href: '/workflows', icon: Workflow, color: 'from-blue-500 to-blue-700' },
+    { label: 'Add Product', href: '/ecommerce', icon: Package, color: 'from-green-500 to-green-700' },
+    { label: 'New AI Agent', href: '/ai', icon: Bot, color: 'from-purple-500 to-purple-700' },
+    { label: 'View CRM', href: '/crm', icon: Zap, color: 'from-orange-500 to-orange-700' },
 ]
 
 export default function DashboardPage() {

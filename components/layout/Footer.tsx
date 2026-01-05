@@ -52,8 +52,8 @@ export function Footer() {
                     <div className="lg:col-span-2">
                         <Link href="/" className="flex items-center space-x-2 mb-4">
                             <Image
-                                src={LOGO_URL}
-                                alt="Logo"
+                                src="/logo.png"
+                                alt="GS Logo"
                                 width={40}
                                 height={40}
                                 className="rounded-lg"

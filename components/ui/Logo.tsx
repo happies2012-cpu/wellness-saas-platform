@@ -4,19 +4,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
-export default function Logo({ className = '' }: { className?: string }) {
+export default function Logo({ className = '', size = 40 }: { className?: string; size?: number }) {
     return (
         <Link href="/" className={`flex items-center space-x-3 ${className}`}>
             <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center space-x-3"
             >
-                {/* Logo Image */}
-                <div className="relative w-10 h-10">
+                {/* Your Brand Logo */}
+                <div className="relative" style={{ width: size, height: size }}>
                     <Image
-                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695a500ce95682b1d7a5b656/9474b0b61_gslogo.png"
-                        alt="HumanAI Logo"
+                        src="/logo.png"
+                        alt="GS Logo"
                         fill
                         className="object-contain"
                         priority

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 import {
     LayoutDashboard,
     Workflow,
@@ -21,14 +22,12 @@ import { cn } from '@/lib/utils'
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Workflows', href: '/dashboard/workflows', icon: Workflow },
-    { name: 'AI Agents', href: '/dashboard/ai', icon: Bot },
-    { name: 'Workforce', href: '/dashboard/workforce', icon: Users },
-    { name: 'E-commerce', href: '/dashboard/ecommerce', icon: ShoppingCart },
-    { name: 'CRM', href: '/dashboard/crm', icon: MessageSquare },
-    { name: 'CMS', href: '/dashboard/cms', icon: FileText },
-    { name: 'Revenue', href: '/dashboard/revenue', icon: TrendingUp },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+    { name: 'Workflows', href: '/workflows', icon: Workflow },
+    { name: 'AI Agents', href: '/ai', icon: Bot },
+    { name: 'CRM', href: '/crm', icon: MessageSquare },
+    { name: 'E-commerce', href: '/ecommerce', icon: ShoppingCart },
+    { name: 'Revenue', href: '/revenue', icon: TrendingUp },
+    { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
 export function Sidebar() {
@@ -44,9 +43,27 @@ export function Sidebar() {
                 {/* Logo */}
                 <div className="h-20 flex items-center justify-between px-6 border-b border-white/10">
                     {!collapsed && (
-                        <span className="text-xl font-display font-bold gradient-text">
-                            Wellness
-                        </span>
+                        <Link href="/" className="flex items-center space-x-2">
+                            <Image
+                                src="/logo.png"
+                                alt="GS Logo"
+                                width={32}
+                                height={32}
+                                className="object-contain"
+                            />
+                            <span className="text-xl font-display font-bold gradient-text">
+                                HumanAI
+                            </span>
+                        </Link>
+                    )}
+                    {collapsed && (
+                        <Image
+                            src="/logo.png"
+                            alt="GS Logo"
+                            width={32}
+                            height={32}
+                            className="object-contain mx-auto"
+                        />
                     )}
                     <button
                         onClick={() => setCollapsed(!collapsed)}

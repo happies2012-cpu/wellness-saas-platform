@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Zap, Users, Workflow, Bot, TrendingUp, Globe, Shield } from 'lucide-react'
+import { ArrowRight, Zap, Users, Workflow, Bot, TrendingUp, Star, Mail, Phone, MessageCircle, Globe, Shield, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import DeviceShowcase from '@/components/ui/DeviceShowcase'
 
 const features = [
     {
@@ -116,6 +117,16 @@ export default function HomePage() {
                                 </Button>
                             </Link>
                         </div>
+
+                        {/* Device Showcase */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6, duration: 0.8 }}
+                            className="mt-20"
+                        >
+                            <DeviceShowcase />
+                        </motion.div>
 
                         {/* Floating Elements */}
                         <motion.div
@@ -287,6 +298,96 @@ export default function HomePage() {
                             </motion.div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* Contact Section */}
+            <section className="section-padding bg-dark-100">
+                <div className="container-custom">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+                            Get In Touch
+                        </h2>
+                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                            Have questions? We&apos;re here to help. Reach out through any of these channels.
+                        </p>
+                    </motion.div>
+
+                    <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                        {[
+                            {
+                                icon: Mail,
+                                title: 'Email Us',
+                                description: 'Get in touch via email',
+                                action: 'hello@humanai.com',
+                                href: 'mailto:hello@humanai.com',
+                                color: 'from-blue-500 to-blue-700',
+                            },
+                            {
+                                icon: MessageCircle,
+                                title: 'Live Chat',
+                                description: 'Chat with our team',
+                                action: 'Start Chat',
+                                href: '#',
+                                color: 'from-purple-500 to-purple-700',
+                            },
+                            {
+                                icon: Phone,
+                                title: 'Call Us',
+                                description: 'Speak with an expert',
+                                action: '+1 (555) 123-4567',
+                                href: 'tel:+15551234567',
+                                color: 'from-pink-500 to-pink-700',
+                            },
+                        ].map((contact, index) => (
+                            <motion.a
+                                key={contact.title}
+                                href={contact.href}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                viewport={{ once: true }}
+                                whileHover={{ scale: 1.05, y: -5 }}
+                                className="glass rounded-2xl p-8 text-center group cursor-pointer"
+                            >
+                                <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${contact.color} flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform`}>
+                                    <contact.icon size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-xl font-semibold mb-2">{contact.title}</h3>
+                                <p className="text-gray-400 mb-4">{contact.description}</p>
+                                <div className="text-primary-400 font-medium group-hover:text-primary-300 transition-colors">
+                                    {contact.action}
+                                </div>
+                            </motion.a>
+                        ))}
+                    </div>
+
+                    {/* Social Links */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="mt-16 text-center"
+                    >
+                        <p className="text-gray-400 mb-6">Follow us on social media</p>
+                        <div className="flex items-center justify-center space-x-6">
+                            {['Twitter', 'LinkedIn', 'GitHub', 'Discord'].map((social) => (
+                                <motion.a
+                                    key={social}
+                                    href="#"
+                                    whileHover={{ scale: 1.2, y: -3 }}
+                                    className="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-primary-500/20 transition-colors"
+                                >
+                                    <span className="text-sm font-medium">{social[0]}</span>
+                                </motion.a>
+                            ))}
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 

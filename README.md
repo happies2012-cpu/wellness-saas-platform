@@ -1,4 +1,4 @@
-# WellnessPlatform - SaaS Workforce + AI Operating System
+# HumanAI - Workforce Operating System
 
 A complete, production-ready Tier-1 Global SaaS platform combining workforce management, AI operating system, marketplace, workflow automation, and comprehensive monetization.
 

@@ -135,10 +135,15 @@ export default function LoginPage() {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-center mb-8"
+                        className="flex justify-center mb-8"
                     >
-                        <h2 className="text-3xl font-display font-bold mb-2">Sign In</h2>
-                        <p className="text-gray-400">Enter your credentials to continue</p>
+                        <div className="flex items-center space-x-3">
+                            <img src="/logo.png" alt="GS Logo" className="w-12 h-12" />
+                            <div>
+                                <h2 className="text-3xl font-display font-bold">Sign In</h2>
+                                <p className="text-sm text-gray-400">to HumanAI</p>
+                            </div>
+                        </div>
                     </motion.div>
 
                     {/* Form */}

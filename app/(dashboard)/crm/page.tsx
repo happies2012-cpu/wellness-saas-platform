@@ -1,141 +1,231 @@
 'use client'
 
-import { Plus, Mail, Phone, Building, TrendingUp } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/Button'
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Users, TrendingUp, DollarSign, Mail, Phone, Plus, Filter } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 
-const leads = [
-    {
-        id: '1',
-        name: 'John Smith',
-        email: 'john@example.com',
-        company: 'Tech Corp',
-        status: 'hot',
-        value: '$50,000',
-        lastContact: '2 hours ago',
-    },
-    {
-        id: '2',
-        name: 'Sarah Johnson',
-        email: 'sarah@startup.com',
-        company: 'Startup XYZ',
-        status: 'warm',
-        value: '$25,000',
-        lastContact: '1 day ago',
-    },
-    {
-        id: '3',
-        name: 'Mike Chen',
-        email: 'mike@business.com',
-        company: 'Business Inc',
-        status: 'cold',
-        value: '$10,000',
-        lastContact: '1 week ago',
-    },
-]
+interface Lead {
+    id: string
+    name: string
+    email: string
+    phone?: string
+    company?: string
+    status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'won' | 'lost'
+    value: number
+    created_at: string
+}
 
 export default function CRMPage() {
+    const [leads, setLeads] = useState<Lead[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        fetchLeads()
+    }, [])
+
+    const fetchLeads = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch('/api/crm/leads')
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch leads')
+            }
+
+            const data = await response.json()
+            setLeads(data.leads || [])
+        } catch (err: any) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const stats = [
+        {
+            label: 'Total Leads',
+            value: leads.length.toString(),
+            icon: Users,
+            color: 'text-blue-400'
+        },
+        {
+            label: 'Qualified',
+            value: leads.filter(l => l.status === 'qualified').length.toString(),
+            icon: TrendingUp,
+            color: 'text-green-400'
+        },
+        {
+            label: 'Pipeline Value',
+            value: `$${leads.reduce((sum, l) => sum + (l.value || 0), 0).toLocaleString()}`,
+            icon: DollarSign,
+            color: 'text-purple-400'
+        },
+        {
+            label: 'Won Deals',
+            value: leads.filter(l => l.status === 'won').length.toString(),
+            icon: TrendingUp,
+            color: 'text-orange-400'
+        },
+    ]
+
+    const getStatusColor = (status: string) => {
+        const colors: Record<string, string> = {
+            new: 'bg-blue-500/20 text-blue-400',
+            contacted: 'bg-yellow-500/20 text-yellow-400',
+            qualified: 'bg-green-500/20 text-green-400',
+            proposal: 'bg-purple-500/20 text-purple-400',
+            won: 'bg-emerald-500/20 text-emerald-400',
+            lost: 'bg-red-500/20 text-red-400',
+        }
+        return colors[status] || 'bg-gray-500/20 text-gray-400'
+    }
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                    <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-gray-400">Loading leads...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <Card variant="glass" className="p-8 text-center max-w-md">
+                    <div className="text-red-400 mb-4">⚠️ Error</div>
+                    <p className="text-gray-300 mb-4">{error}</p>
+                    <Button onClick={fetchLeads} variant="default">
+                        Try Again
+                    </Button>
+                </Card>
+            </div>
+        )
+    }
+
     return (
         <div className="space-y-8">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-display font-bold mb-2">CRM</h1>
-                    <p className="text-gray-400">Manage your leads and customers</p>
+                    <h1 className="text-3xl font-display font-bold mb-2">
+                        CRM <span className="gradient-text">Dashboard</span>
+                    </h1>
+                    <p className="text-gray-400">Manage your leads and customer relationships</p>
                 </div>
-                <Link href="/dashboard/crm/create">
+                <div className="flex items-center space-x-3">
+                    <Button variant="outline">
+                        <Filter size={20} className="mr-2" />
+                        Filter
+                    </Button>
                     <Button variant="premium">
                         <Plus size={20} className="mr-2" />
                         Add Lead
                     </Button>
-                </Link>
+                </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {[
-                    { label: 'Total Leads', value: '156', icon: TrendingUp, color: 'text-blue-400' },
-                    { label: 'Hot Leads', value: '23', icon: TrendingUp, color: 'text-red-400' },
-                    { label: 'Customers', value: '89', icon: Building, color: 'text-green-400' },
-                    { label: 'Pipeline Value', value: '$2.4M', icon: TrendingUp, color: 'text-purple-400' },
-                ].map((stat) => (
-                    <Card key={stat.label} variant="glass">
-                        <div className="flex items-center justify-between mb-2">
-                            <stat.icon className={stat.color} size={24} />
-                        </div>
-                        <div className="text-2xl font-bold mb-1">{stat.value}</div>
-                        <div className="text-sm text-gray-400">{stat.label}</div>
-                    </Card>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {stats.map((stat, index) => (
+                    <motion.div
+                        key={stat.label}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                    >
+                        <Card variant="glass" className="card-hover">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color === 'text-blue-400' ? 'from-blue-500/20 to-blue-700/20' :
+                                    stat.color === 'text-green-400' ? 'from-green-500/20 to-green-700/20' :
+                                        stat.color === 'text-purple-400' ? 'from-purple-500/20 to-purple-700/20' :
+                                            'from-orange-500/20 to-orange-700/20'
+                                    } flex items-center justify-center`}>
+                                    <stat.icon className={stat.color} size={24} />
+                                </div>
+                            </div>
+                            <div className="text-2xl font-bold mb-1">{stat.value}</div>
+                            <div className="text-sm text-gray-400">{stat.label}</div>
+                        </Card>
+                    </motion.div>
                 ))}
             </div>
-
-            {/* Pipeline */}
-            <Card variant="glass">
-                <h3 className="text-lg font-semibold mb-4">Sales Pipeline</h3>
-                <div className="grid grid-cols-4 gap-4">
-                    {[
-                        { stage: 'New', count: 45, value: '$450K' },
-                        { stage: 'Qualified', count: 32, value: '$640K' },
-                        { stage: 'Proposal', count: 18, value: '$900K' },
-                        { stage: 'Closed', count: 12, value: '$480K' },
-                    ].map((stage) => (
-                        <div key={stage.stage} className="text-center p-4 glass-dark rounded-xl">
-                            <div className="text-sm text-gray-400 mb-2">{stage.stage}</div>
-                            <div className="text-2xl font-bold mb-1">{stage.count}</div>
-                            <div className="text-xs text-primary-400">{stage.value}</div>
-                        </div>
-                    ))}
-                </div>
-            </Card>
 
             {/* Leads List */}
             <div>
                 <h2 className="text-xl font-semibold mb-4">Recent Leads</h2>
-                <div className="space-y-4">
-                    {leads.map((lead) => (
-                        <Card key={lead.id} variant="glass" className="card-hover">
-                            <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                    <div className="flex items-center space-x-3 mb-2">
-                                        <h3 className="text-lg font-semibold">{lead.name}</h3>
-                                        <span
-                                            className={`px-2 py-1 text-xs rounded-full ${lead.status === 'hot'
-                                                    ? 'bg-red-500/20 text-red-400'
-                                                    : lead.status === 'warm'
-                                                        ? 'bg-yellow-500/20 text-yellow-400'
-                                                        : 'bg-blue-500/20 text-blue-400'
-                                                }`}
-                                        >
-                                            {lead.status}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center space-x-6 text-sm text-gray-400">
-                                        <span className="flex items-center space-x-2">
-                                            <Mail size={14} />
-                                            <span>{lead.email}</span>
-                                        </span>
-                                        <span className="flex items-center space-x-2">
-                                            <Building size={14} />
-                                            <span>{lead.company}</span>
-                                        </span>
-                                    </div>
-                                </div>
 
-                                <div className="flex items-center space-x-8">
-                                    <div className="text-right">
-                                        <div className="text-xl font-bold gradient-text">{lead.value}</div>
-                                        <div className="text-xs text-gray-400">Last contact: {lead.lastContact}</div>
+                {leads.length === 0 ? (
+                    <Card variant="glass" className="p-12 text-center">
+                        <Users size={48} className="text-gray-600 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">No leads yet</h3>
+                        <p className="text-gray-400 mb-6">Start adding leads to manage your sales pipeline</p>
+                        <Button variant="premium">
+                            <Plus size={20} className="mr-2" />
+                            Add Your First Lead
+                        </Button>
+                    </Card>
+                ) : (
+                    <div className="space-y-4">
+                        {leads.map((lead, index) => (
+                            <motion.div
+                                key={lead.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                            >
+                                <Card variant="glass" className="card-hover">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center space-x-4 flex-1">
+                                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-semibold">
+                                                {lead.name.charAt(0)}
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="font-semibold mb-1">{lead.name}</h3>
+                                                <div className="flex items-center space-x-4 text-sm text-gray-400">
+                                                    {lead.email && (
+                                                        <div className="flex items-center space-x-1">
+                                                            <Mail size={14} />
+                                                            <span>{lead.email}</span>
+                                                        </div>
+                                                    )}
+                                                    {lead.phone && (
+                                                        <div className="flex items-center space-x-1">
+                                                            <Phone size={14} />
+                                                            <span>{lead.phone}</span>
+                                                        </div>
+                                                    )}
+                                                    {lead.company && (
+                                                        <span>• {lead.company}</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center space-x-4">
+                                            <div className="text-right">
+                                                <div className="font-semibold text-green-400">
+                                                    ${lead.value?.toLocaleString() || 0}
+                                                </div>
+                                                <div className="text-xs text-gray-400">
+                                                    {new Date(lead.created_at).toLocaleDateString()}
+                                                </div>
+                                            </div>
+                                            <div className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(lead.status)}`}>
+                                                {lead.status}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <Button variant="outline" size="sm">
-                                        <Phone size={16} className="mr-2" />
-                                        Contact
-                                    </Button>
-                                </div>
-                            </div>
-                        </Card>
-                    ))}
-                </div>
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )

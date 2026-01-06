@@ -152,8 +152,8 @@ export default function SignupPage() {
                                     animate={{ scale: 1 }}
                                     transition={{ delay: s * 0.2 }}
                                     className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step >= s
-                                            ? 'bg-gradient-to-r from-primary-500 to-primary-700 text-white'
-                                            : 'bg-dark-200 text-gray-500'
+                                        ? 'bg-gradient-to-r from-primary-500 to-primary-700 text-white'
+                                        : 'bg-dark-200 text-gray-500'
                                         }`}
                                 >
                                     {s}
@@ -169,14 +169,19 @@ export default function SignupPage() {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-center mb-8"
+                        className="flex justify-center mb-8"
                     >
-                        <h2 className="text-3xl font-display font-bold mb-2">
-                            {step === 1 ? 'Create Account' : 'Choose Your Role'}
-                        </h2>
-                        <p className="text-gray-400">
-                            {step === 1 ? 'Start your journey with us' : 'Select how you want to use the platform'}
-                        </p>
+                        <div className="flex items-center space-x-3">
+                            <img src="/logo.png" alt="GS Logo" className="w-12 h-12" />
+                            <div>
+                                <h2 className="text-3xl font-display font-bold">
+                                    {step === 1 ? 'Create Account' : 'Choose Your Role'}
+                                </h2>
+                                <p className="text-sm text-gray-400">
+                                    {step === 1 ? 'Join HumanAI' : 'Select your workspace role'}
+                                </p>
+                            </div>
+                        </div>
                     </motion.div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -262,8 +267,8 @@ export default function SignupPage() {
                                             transition={{ delay: index * 0.1 }}
                                             onClick={() => setFormData({ ...formData, role: role.id })}
                                             className={`p-6 rounded-xl border-2 transition-all ${formData.role === role.id
-                                                    ? 'border-primary-500 bg-primary-500/10'
-                                                    : 'border-dark-200 hover:border-dark-300'
+                                                ? 'border-primary-500 bg-primary-500/10'
+                                                : 'border-dark-200 hover:border-dark-300'
                                                 }`}
                                         >
                                             <div className="text-4xl mb-3">{role.icon}</div>

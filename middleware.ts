@@ -1,30 +1,83 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { UserRole, canAccessRoute } from '@/lib/rbac/permissions'
 
-const publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/platform', '/workflows', '/ai-agents', '/workforce', '/pricing', '/about', '/blog']
-const authRoutes = ['/login', '/signup', '/forgot-password']
+// Protected routes that require authentication
+const protectedRoutes = [
+    '/dashboard',
+    '/workflows',
+    '/ai',
+    '/crm',
+    '/ecommerce',
+    '/revenue',
+    '/settings',
+]
+
+// Public routes that don't require authentication
+const publicRoutes = [
+    '/',
+    '/login',
+    '/signup',
+    '/about',
+    '/platform',
+    '/pricing',
+]
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
 
+    // Check if route is protected
+    const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
+    const isPublicRoute = publicRoutes.some(route => pathname === route)
+
     // Allow public routes
-    if (publicRoutes.some(route => pathname.startsWith(route))) {
+    if (isPublicRoute) {
         return NextResponse.next()
     }
 
-    // Check for auth token
-    const token = request.cookies.get('sb-access-token')
+    // Check authentication for protected routes
+    if (isProtectedRoute) {
+        const supabase = createClient()
 
-    // Redirect to login if no token and trying to access protected route
-    if (!token && !authRoutes.some(route => pathname.startsWith(route))) {
-        const url = new URL('/login', request.url)
-        url.searchParams.set('redirect', pathname)
-        return NextResponse.redirect(url)
-    }
+        try {
+            const { data: { session }, error } = await supabase.auth.getSession()
 
-    // Redirect to dashboard if logged in and trying to access auth routes
-    if (token && authRoutes.some(route => pathname.startsWith(route))) {
-        return NextResponse.redirect(new URL('/dashboard', request.url))
+            if (error || !session) {
+                // Redirect to login if not authenticated
+                const loginUrl = new URL('/login', request.url)
+                loginUrl.searchParams.set('redirect', pathname)
+                return NextResponse.redirect(loginUrl)
+            }
+
+            // Get user profile with role
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', session.user.id)
+                .single()
+
+            if (!profile) {
+                return NextResponse.redirect(new URL('/login', request.url))
+            }
+
+            // Check role-based access
+            const userRole = profile.role as UserRole
+            if (!canAccessRoute(userRole, pathname)) {
+                // Redirect to dashboard if user doesn't have permission
+                return NextResponse.redirect(new URL('/dashboard', request.url))
+            }
+
+            // Add user info to headers for use in pages
+            const response = NextResponse.next()
+            response.headers.set('x-user-id', session.user.id)
+            response.headers.set('x-user-role', userRole)
+
+            return response
+        } catch (error) {
+            console.error('Middleware error:', error)
+            return NextResponse.redirect(new URL('/login', request.url))
+        }
     }
 
     return NextResponse.next()
@@ -32,6 +85,14 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api (API routes)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         * - public folder
+         */
+        '/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.svg$).*)',
     ],
 }

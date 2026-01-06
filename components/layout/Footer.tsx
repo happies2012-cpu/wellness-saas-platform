@@ -59,7 +59,7 @@ export function Footer() {
                                 className="rounded-lg"
                             />
                             <span className="text-xl font-display font-bold gradient-text">
-                                HumanAI
+                                GUIDESOFT AI
                             </span>
                         </Link>
                         <p className="text-gray-400 mb-6 max-w-md">
@@ -156,7 +156,7 @@ export function Footer() {
                 {/* Bottom Bar */}
                 <div className="mt-12 pt-8 border-t border-dark-200">
                     <p className="text-center text-gray-400 text-sm">
-                        © {new Date().getFullYear()} HumanAI. All rights reserved.
+                        © {new Date().getFullYear()} GUIDESOFT AI. All rights reserved.
                     </p>
                 </div>
             </div>

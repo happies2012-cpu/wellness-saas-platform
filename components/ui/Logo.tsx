@@ -26,7 +26,7 @@ export default function Logo({ className = '', size = 40 }: { className?: string
                 {/* Brand Text */}
                 <div className="flex flex-col">
                     <span className="text-xl font-display font-bold gradient-text">
-                        HumanAI
+                        GUIDESOFT AI
                     </span>
                     <span className="text-[10px] text-gray-400 -mt-1">
                         Workforce OS

@@ -52,7 +52,7 @@ export function Sidebar() {
                                 className="object-contain"
                             />
                             <span className="text-xl font-display font-bold gradient-text">
-                                HumanAI
+                                GUIDESOFT AI
                             </span>
                         </Link>
                     )}

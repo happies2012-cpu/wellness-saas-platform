@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
                     merchantKey: process.env.PAYU_MERCHANT_KEY,
                     txnid: orderId,
                     amount,
-                    productinfo: 'HumanAI Subscription',
+                    productinfo: 'GUIDESOFT AI Subscription',
                     firstname: customerDetails.name,
                     email: customerDetails.email,
                     phone: customerDetails.phone,
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
                 paymentData = {
                     vpa: process.env.UPI_MERCHANT_VPA || 'merchant@upi',
                     amount,
-                    name: 'HumanAI',
+                    name: 'GUIDESOFT AI',
                     note: 'Subscription Payment',
                     transactionId: orderId,
                 }

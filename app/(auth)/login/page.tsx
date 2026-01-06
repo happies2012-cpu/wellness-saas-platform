@@ -141,7 +141,7 @@ export default function LoginPage() {
                             <img src="/logo.png" alt="GS Logo" className="w-12 h-12" />
                             <div>
                                 <h2 className="text-3xl font-display font-bold">Sign In</h2>
-                                <p className="text-sm text-gray-400">to HumanAI</p>
+                                <p className="text-sm text-gray-400">to GUIDESOFT AI</p>
                             </div>
                         </div>
                     </motion.div>

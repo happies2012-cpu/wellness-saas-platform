@@ -162,7 +162,7 @@ export async function processPayment(
                 {
                     txnid: orderId,
                     amount,
-                    productinfo: 'HumanAI Subscription',
+                    productinfo: 'GUIDESOFT AI Subscription',
                     firstname: customerDetails.name,
                     email: customerDetails.email,
                     phone: customerDetails.phone,
@@ -195,7 +195,7 @@ export async function processPayment(
             initiateUPIPayment({
                 vpa: 'merchant@upi', // Replace with actual merchant UPI
                 amount,
-                name: 'HumanAI',
+                name: 'GUIDESOFT AI',
                 note: 'Subscription Payment',
                 transactionId: orderId,
             })

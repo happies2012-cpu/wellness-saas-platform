@@ -178,7 +178,7 @@ export default function SignupPage() {
                                     {step === 1 ? 'Create Account' : 'Choose Your Role'}
                                 </h2>
                                 <p className="text-sm text-gray-400">
-                                    {step === 1 ? 'Join HumanAI' : 'Select your workspace role'}
+                                    {step === 1 ? 'Join GUIDESOFT AI' : 'Select your workspace role'}
                                 </p>
                             </div>
                         </div>

@@ -6,12 +6,12 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' })
 
 export const metadata: Metadata = {
-    title: 'HumanAI - Workforce Operating System',
+    title: 'GUIDESOFT AI - AI-Powered Business Platform',
     description: 'The unified platform where anyone can join, work, sell, earn, and collaborate through human-AI teams. Build workflows, manage teams, and scale your business.',
     keywords: ['SaaS', 'AI', 'Workflow Automation', 'Workforce Management', 'E-commerce', 'CRM'],
-    authors: [{ name: 'HumanAI' }],
+    authors: [{ name: 'GUIDESOFT AI' }],
     openGraph: {
-        title: 'HumanAI - Workforce Operating System',
+        title: 'GUIDESOFT AI - AI-Powered Business Platform',
         description: 'The unified platform for human-AI collaboration',
         images: ['/opengraph-image.png'],
     },

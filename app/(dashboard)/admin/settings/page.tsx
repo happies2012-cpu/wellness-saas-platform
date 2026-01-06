@@ -9,8 +9,8 @@ import { Input } from '@/components/ui/Input'
 
 export default function SystemSettingsPage() {
     const [settings, setSettings] = useState({
-        siteName: 'HumanAI',
-        siteUrl: 'https://wellness-platform-one.vercel.app',
+        siteName: 'GUIDESOFT AI',
+        siteUrl: 'https://guidesoft-ai-platform-one.vercel.app',
         supportEmail: 'support@humanai.com',
         fromEmail: 'noreply@humanai.com',
         smtpHost: 'smtp.gmail.com',

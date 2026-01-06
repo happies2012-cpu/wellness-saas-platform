@@ -39,7 +39,7 @@ function PaymentSuccessContent() {
                         Payment Successful! 🎉
                     </h1>
                     <p className="text-xl text-gray-400 mb-8">
-                        Thank you for subscribing to HumanAI
+                        Thank you for subscribing to GUIDESOFT AI
                     </p>
 
                     {/* Order Details */}

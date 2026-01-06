@@ -73,6 +73,7 @@ const config: Config = {
                 'slide-down': 'slide-down 0.5s ease-out',
                 'fade-in': 'fade-in 0.3s ease-out',
                 'scale-in': 'scale-in 0.3s ease-out',
+                'shimmer': 'shimmer 2s infinite',
             },
             keyframes: {
                 float: {
@@ -98,6 +99,9 @@ const config: Config = {
                 'scale-in': {
                     '0%': { transform: 'scale(0.95)', opacity: '0' },
                     '100%': { transform: 'scale(1)', opacity: '1' },
+                },
+                'shimmer': {
+                    '100%': { transform: 'translateX(100%)' },
                 },
             },
         },

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { Mail, Lock, User, Building, Eye, EyeOff, ArrowRight, Sparkles, Check } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import Image from 'next/image'
 
 const roles = [
     { id: 'brand_owner', name: 'Brand Owner', icon: '👑' },
@@ -172,7 +173,7 @@ export default function SignupPage() {
                         className="flex justify-center mb-8"
                     >
                         <div className="flex items-center space-x-3">
-                            <img src="/logo.png" alt="GS Logo" className="w-12 h-12" />
+                            <Image src="/logo.png" alt="GS Logo" width={48} height={48} className="w-12 h-12" />
                             <div>
                                 <h2 className="text-3xl font-display font-bold">
                                     {step === 1 ? 'Create Account' : 'Choose Your Role'}

@@ -1,20 +1,6 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-
-export const supabaseAdmin = supabaseUrl && supabaseServiceKey
-    ? createSupabaseClient(supabaseUrl, supabaseServiceKey, {
-        auth: {
-            autoRefreshToken: false,
-            persistSession: false,
-        },
-    })
-    : null
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 export function createClient() {
-    if (!supabaseAdmin) {
-        throw new Error('Supabase client not initialized. Please set environment variables.')
-    }
-    return supabaseAdmin
+    return createServerComponentClient({ cookies })
 }
